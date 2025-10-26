@@ -7,7 +7,7 @@
   <style>
     :root{ --bg:#fff0f5; --txt:#2b2b2b; --accent:#ffb6c1; --accent2:#ff9aae; --love:#e91e63; --radius:22px; }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--txt);font-family: system-ui, -apple-system, "Segoe UI", Roboto, Poppins, Arial;display:flex;align-items:center;justify-content:center;min-height:100svh;padding:28px;overflow-x:hidden}
+    body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Poppins,Arial;display:flex;align-items:center;justify-content:center;min-height:100svh;padding:28px;overflow-x:hidden}
     .card{max-width:560px;width:100%;background:#fff;border-radius:var(--radius);padding:22px 18px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.12)}
     p.mensaje{font-size:20px;line-height:1.5;margin:10px 0 0;font-weight:400;color:#333}
     .lead{font-size:14px;color:#555;font-weight:bold}
@@ -15,134 +15,136 @@
     img.hero{width:100%;max-width:380px;border-radius:18px;box-shadow:0 6px 16px rgba(0,0,0,.18);margin:6px auto 14px;display:block;opacity:1;transition:opacity 900ms ease}
     img.hero.fade{opacity:0}
 
-    .buttons{display:flex;gap:12px;justify-content:center;margin-top:18px}
+    .buttons{display:flex;gap:12px;justify-content:center;margin-top:18px;flex-wrap:wrap}
     button{background:var(--accent);border:0;padding:10px 18px;border-radius:999px;cursor:pointer;font-weight:700;transition:0.3s ease}
     button:hover{background:var(--accent2);transform:translateY(-1px)}
 
-    @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,182,193,.7);} 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,182,193,0);} 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,182,193,0);} }
-    #verPregunta { animation: pulse 2s infinite; }
+    @keyframes pulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,182,193,.7);}70%{transform:scale(1.05);box-shadow:0 0 0 15px rgba(255,182,193,0);}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,182,193,0);}}
+    #verPregunta{animation:pulse 2s infinite}
 
     #respuesta{font-size:18px;margin-top:16px;color:var(--love);font-weight:800;opacity:0;transition:opacity .5s}
 
     .fade-out{opacity:0;transform:scale(.98)}
     .fade-in{opacity:1}
     .hidden{display:none}
-    .screen{opacity:1;transition:opacity .8s, transform .8s}
+    .screen{opacity:1;transition:opacity .8s,transform .8s}
 
     .confetti{position:fixed;top:-10px;width:10px;height:10px;background:var(--accent);animation:fall 3s linear forwards;opacity:.9;z-index:1000;border-radius:2px}
     @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.7}}
 
+    @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
     @media (max-width:420px){p.mensaje{font-size:18px}}
+
+    #pdTexto{margin-top:14px;font-size:14px;line-height:1.4;color:#444;opacity:0;transition:opacity .9s ease}
+    #pdTexto.visible{opacity:1}
   </style>
 </head>
 <body>
-  <!-- URLs definitivas -->
   <script>
-    const URL_IMG1 = "https://pbs.twimg.com/media/G4Nc2EiXgAAKzB_?format=jpg&name=small"; // imagen inicial
-    const URL_QA   = "https://pbs.twimg.com/media/G4NcTIwXUAADZ2r?format=jpg&name=small"; // imagen de la pregunta
-    const URL_NO   = "https://pbs.twimg.com/media/G39mbCIXEAAfDkG?format=jpg&name=900x900"; // gatitos (no)
-    const URL_FINAL= "https://i.pinimg.com/736x/1c/b0/07/1cb00701e176878a4c7bb8767db7fa98.jpg"; // conejitas (sí)
+    const URL_IMG1="https://pbs.twimg.com/media/G4Nc2EiXgAAKzB_?format=jpg&name=small";
+    const URL_QA="https://pbs.twimg.com/media/G4NcTIwXUAADZ2r?format=jpg&name=small";
+    const URL_NO="https://pbs.twimg.com/media/G39mbCIXEAAfDkG?format=jpg&name=900x900";
+    const URL_FINAL="https://i.pinimg.com/736x/1c/b0/07/1cb00701e176878a4c7bb8767db7fa98.jpg";
   </script>
 
-  <!-- Pantalla 0: Aviso exclusivo -->
+  <!-- Pantalla 0 -->
   <section id="intro" class="card screen">
-    <h1> ⚠️ </h1>
-    <p class="lead" id="aviso">esto es únicamente para el amor de mi vida. por favor, en caso de no ser <strong>milagros</strong>, no continuar.</p>
-    <button id="continuar">continuar </button>
+    <h1>⚠️</h1>
+    <p class="lead">esto es únicamente para el amor de mi vida. por favor, en caso de no ser <strong>milagros</strong>, no continuar.</p>
+    <button id="continuar">continuar</button>
   </section>
 
-  <!-- Pantalla 1: Mensaje + botón para ir a la pregunta -->
-  <section id="main" class="card screen hidden" aria-hidden="true">
+  <!-- Pantalla 1 -->
+  <section id="main" class="card screen hidden">
     <div id="wrapImg1"></div>
-    <p class="mensaje">desde que te conozco estoy segura de que vos sos la persona con la que quiero pasar el resto de mi vida,<br />me apena tanto haber desperdiciado la cantidad de tiempo que desperdicié que ya no quiero perder un segundo más sin vos. quiero construir lo que siempre soñamos las dos y ser finalmente una pero para llegar a eso, necesito preguntarte algo...</p>
-    <div class="buttons" id="revealBox">
-      <button id="verPregunta">continuar </button>
+    <p class="mensaje">desde que te conozco estoy segura de que vos sos la persona con la que quiero pasar el resto de mi vida,<br />me apena tanto haber desperdiciado la cantidad de tiempo que desperdicié que ya no quiero perder un segundo más sin vos. quiero construir lo que siempre soñamos y ser finalmente una pero para llegar a eso, necesito preguntarte algo...</p>
+    <div class="buttons">
+      <button id="verPregunta">continuar</button>
     </div>
   </section>
 
-  <!-- Pantalla QA: Pregunta + imagen de la pregunta -->
-  <section id="qaScreen" class="card screen hidden" aria-hidden="true">
+  <!-- Pregunta -->
+  <section id="qaScreen" class="card screen hidden">
     <div id="wrapImgQA"></div>
     <p class="lead" style="margin:10px 0 0"><strong>¿puedo ser tu novia?</strong></p>
     <div class="buttons">
-      <button id="btnSi">sí </button>
-      <button id="btnNo" style="background:#ffe082">no </button>
+      <button id="btnSi">sí</button>
+      <button id="btnNo" style="background:#ffe082">no</button>
     </div>
     <div id="respuesta"></div>
   </section>
 
-  <!-- Pantalla NO: Gatitos con cuenta regresiva -->
-  <section id="noScreen" class="card screen hidden" aria-hidden="true">
+  <!-- No -->
+  <section id="noScreen" class="card screen hidden">
     <p class="lead" style="font-weight:700;color:#b00020">respuesta equivocada. no es posible negarse</p>
     <img class="hero" id="imgNo" src="" alt="imagen divertida no" style="max-width:300px" />
-    <p class="lead" style="color:#777">volviendo a la pregunta en <span id="countdown">5</span>…</p>
+    <p class="lead" style="color:#777" aria-live="polite">volviendo a la pregunta en <span id="countdown">5</span>…</p>
   </section>
 
-  <!-- Pantalla FINAL: Con fade suave en la imagen -->
-  <section id="final" class="card screen hidden" aria-hidden="true">
-    <h1 id="tituloFinal" style="margin-bottom:10px">oficialmente somos estas </h1>
+  <!-- Final -->
+  <section id="final" class="card screen hidden">
+    <h1 style="margin-bottom:10px">oficialmente somos estas</h1>
     <img id="img2Final" class="hero fade" src="" alt="Somos estas" />
+    <div class="buttons">
+      <button id="btnPD"> 💌 </button>
+    </div>
+    <p id="pdTexto">ahora me comprometo a no salir corriendo cuando las cosas están mal aún si estamos enojadas, te prometo que me voy a quedar y ser mejor para vos.</p>
   </section>
 
   <script>
     'use strict';
+    const intro=document.getElementById('intro');
+    const main=document.getElementById('main');
+    const qaScreen=document.getElementById('qaScreen');
+    const noScreen=document.getElementById('noScreen');
+    const finalScr=document.getElementById('final');
 
-    const intro = document.getElementById('intro');
-    const main = document.getElementById('main');
-    const qaScreen = document.getElementById('qaScreen');
-    const noScreen = document.getElementById('noScreen');
-    const finalScr = document.getElementById('final');
+    const continuar=document.getElementById('continuar');
+    const verPreguntaBtn=document.getElementById('verPregunta');
+    const btnSi=document.getElementById('btnSi');
+    const btnNo=document.getElementById('btnNo');
+    const btnPD=document.getElementById('btnPD');
+    const pdTexto=document.getElementById('pdTexto');
 
-    const verPreguntaBtn = document.getElementById('verPregunta');
-    const continuar = document.getElementById('continuar');
-    const btnSi = document.getElementById('btnSi');
-    const btnNo = document.getElementById('btnNo');
+    const wrapImg1=document.getElementById('wrapImg1');
+    const wrapImgQA=document.getElementById('wrapImgQA');
+    const imgNo=document.getElementById('imgNo');
+    const img2Final=document.getElementById('img2Final');
 
-    const wrapImg1 = document.getElementById('wrapImg1');
-    const wrapImgQA = document.getElementById('wrapImgQA');
-    const imgNo = document.getElementById('imgNo');
-    const img2Final = document.getElementById('img2Final');
+    function addImage(container,url,alt){if(url){const el=new Image();el.src=url;el.alt=alt;el.className='hero';container.appendChild(el);}}
+    addImage(wrapImg1,URL_IMG1,'Imagen inicial');
+    addImage(wrapImgQA,URL_QA,'Imagen de la pregunta');
+    imgNo.src=URL_NO;img2Final.src=URL_FINAL;
 
-    function addImage(container, url, alt){
-      if(url && url.trim()!==''){
-        const el = new Image();
-        el.src = url; el.alt = alt; el.className = 'hero';
-        container.appendChild(el);
-      }
-    }
+    function go(from,to){from.classList.add('fade-out');setTimeout(()=>{from.classList.add('hidden');to.classList.remove('hidden');to.classList.add('fade-in');window.scrollTo({top:0,behavior:'smooth'});},450);}
 
-    addImage(wrapImg1, URL_IMG1, 'Imagen inicial');
-    addImage(wrapImgQA, URL_QA, 'Imagen de la pregunta');
-    imgNo.src = URL_NO;
-    img2Final.src = URL_FINAL;
+    continuar.addEventListener('click',()=>go(intro,main));
+    verPreguntaBtn.addEventListener('click',()=>go(main,qaScreen));
 
-    function go(from, to){
-      from.classList.add('fade-out');
-      setTimeout(()=>{ from.classList.add('hidden'); to.classList.remove('hidden'); to.classList.add('fade-in'); window.scrollTo({top:0,behavior:'smooth'}); }, 450);
-    }
+    let countdownInterval=null;
+    const preFinal=new Image();preFinal.src=URL_FINAL;
 
-    continuar.addEventListener('click', () => { go(intro, main); });
-    verPreguntaBtn.addEventListener('click', () => { go(main, qaScreen); });
-
-    btnSi.addEventListener('click', () => {
-      go(qaScreen, finalScr);
-      requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ img2Final.classList.remove('fade'); }); });
-      lanzarConfetti();
+    btnSi.addEventListener('click',()=>{
+      if(countdownInterval)clearInterval(countdownInterval);
+      go(qaScreen,finalScr);
+      const runFade=()=>{img2Final.classList.add('fade');requestAnimationFrame(()=>{requestAnimationFrame(()=>{img2Final.classList.remove('fade');});});lanzarConfetti();};
+      if(img2Final.complete)runFade();else img2Final.onload=runFade;
     });
 
-    let countdownInterval = null;
-    btnNo.addEventListener('click', () => {
-      go(qaScreen, noScreen);
-      const cd = document.getElementById('countdown');
-      let n = 5; cd.textContent = n;
-      if (countdownInterval) clearInterval(countdownInterval);
-      countdownInterval = setInterval(() => {
-        n -= 1; cd.textContent = n;
-        if (n <= 0) {
-          clearInterval(countdownInterval);
-          go(noScreen, qaScreen);
-        }
-      }, 1000);
+    btnNo.addEventListener('click',()=>{
+      go(qaScreen,noScreen);
+      const cd=document.getElementById('countdown');
+      let n=5;cd.textContent=n;
+      if(countdownInterval)clearInterval(countdownInterval);
+      countdownInterval=setInterval(()=>{
+        n-=1;cd.textContent=n;
+        if(n<=0){clearInterval(countdownInterval);go(noScreen,qaScreen);}
+      },1000);
+    });
+
+    btnPD.addEventListener('click',()=>{
+      pdTexto.classList.toggle('visible');
+      if(pdTexto.classList.contains('visible'))btnPD.textContent="cerrar 💗";else btnPD.textContent="P.D. 💌";
     });
 
     function lanzarConfetti(){
@@ -158,11 +160,8 @@
         setTimeout(()=>c.remove(),5200);
       }
     }
-
-    function colorAleatorio(){
-      const col=['#ffb6c1','#ff69b4','#ffd700','#87cefa','#98fb98','#ffa07a'];
-      return col[Math.floor(Math.random()*col.length)];
-    }
+    function colorAleatorio(){const col=['#ffb6c1','#ff69b4','#ffd700','#87cefa','#98fb98','#ffa07a'];return col[Math.floor(Math.random()*col.length)];}
   </script>
 </body>
 </html>
+
